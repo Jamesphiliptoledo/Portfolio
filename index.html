@@ -561,7 +561,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
     <div class="gm" data-rv>
       <figure class="shot">
         <div class="shot-bar"><i></i><i></i><i></i><span>n8n · Gmail Backfill: Label Existing Emails</span></div>
-        <img src="gmail-organizer.png" width="1502" height="557" alt="The Gmail organizer workflow in n8n. A top row creates the labels once. A bottom row runs on a schedule, gets emails, gets labels, classifies each email and applies a label.">
+        <img src="gmail-organizer.png" onerror="this.onerror=null;this.src='media/gmail-organizer.png'" width="1502" height="557" alt="The Gmail organizer workflow in n8n. A top row creates the labels once. A bottom row runs on a schedule, gets emails, gets labels, classifies each email and applies a label.">
         <figcaption class="mono">My workflow in n8n. The top row creates the labels once. The bottom row sorts the mail.</figcaption>
       </figure>
       <div class="gm-info">
@@ -978,9 +978,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
   ];
   var R=[['Talking head 2','th-2','3/4'],['Talking head 3','th-3','9/16'],['Talking head 4','th-4','9/16'],['Linked Comp 01','th-linked','9/16']];
   var rg=document.getElementById('rgrid');
-  rg.innerHTML=R.map(function(r){
-    return '<figure><div class="rbox" style="aspect-ratio:'+r[2]+'"><video controls playsinline preload="none" poster="'+r[1]+'.jpg" src="'+r[1]+'.mp4" aria-label="'+r[0]+'"></video></div><figcaption>'+r[0]+'</figcaption></figure>';
-  }).join('');
+  function drawR(b){
+    rg.innerHTML=R.map(function(r){
+      return '<figure><div class="rbox" style="aspect-ratio:'+r[2]+'"><video controls playsinline preload="none" poster="'+b+r[1]+'.jpg" src="'+b+r[1]+'.mp4" aria-label="'+r[0]+'"></video></div><figcaption>'+r[0]+'</figcaption></figure>';
+    }).join('');
+  }
+  /* works whether the media files sit next to index.html or in a media/ folder */
+  var probe=new Image();probe.onload=function(){drawR('')};probe.onerror=function(){drawR('media/')};probe.src='th-2.jpg';
   rg.addEventListener('play',function(e){rg.querySelectorAll('video').forEach(function(v){if(v!==e.target)v.pause()})},true);
 
   var cats=['All'];V.forEach(function(v){if(cats.indexOf(v[0])<0)cats.push(v[0])});
