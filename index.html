@@ -107,6 +107,18 @@ button{font:inherit;color:inherit}
 .hero-art{overflow:hidden;background:radial-gradient(120% 90% at 30% 10%,var(--c-crimson-hi),var(--c-crimson) 48%,#4a0505);border-radius:32px;padding:clamp(28px,5vw,56px) 20px;display:grid;place-items:center;min-height:420px}
 @media(max-width:900px){.hero .wrap{grid-template-columns:minmax(0,1fr)}.hero-art{min-height:0}}
 
+/* showreel */
+.reel-sec{padding-top:0}
+.showreel{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:center}
+.rs-frame{border-radius:28px;overflow:hidden;background:radial-gradient(120% 90% at 30% 10%,var(--c-crimson-hi),var(--c-crimson) 48%,#4a0505);padding:clamp(10px,1.6vw,18px)}
+.rs-frame video{display:block;width:100%;aspect-ratio:16/9;border-radius:18px;background:#1a0000;object-fit:cover}
+.rs-list{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.rs-list li{display:grid;gap:2px;padding:16px 0;border-top:1px solid var(--line)}
+.rs-list li:last-child{border-bottom:1px solid var(--line)}
+.rs-list b{font:700 1.125rem var(--f-display);letter-spacing:-.01em}
+.rs-list span{color:var(--text-2);font-size:.9375rem}
+@media(max-width:900px){.showreel{grid-template-columns:minmax(0,1fr)}}
+
 /* sections */
 section{padding-block:clamp(56px,8vw,112px)}
 .sec-head{margin-bottom:clamp(28px,4vw,48px);max-width:46rem}
@@ -414,6 +426,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
   <div class="wrap">
     <a class="logo" href="#top"><i aria-hidden="true">JT</i><span>James Toledo</span></a>
     <nav class="links" aria-label="Sections">
+      <a href="#reel" data-sec="reel">Showreel</a>
       <a href="#offer" data-sec="offer">Services</a>
       <a href="#work" data-sec="work">Projects</a>
       <a href="#automation" data-sec="automation">Automation</a>
@@ -433,13 +446,31 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
       <p class="sub">I am a virtual assistant and builder from Quezon City. I turn the daily headaches of a small business into simple apps, websites and automations. I also run my own rental and food businesses, so I build for how work really goes.</p>
       <div class="cta">
         <a class="btn" href="#work">See what I've built</a>
-        <a class="btn quiet" href="#contact">Start a project</a>
+        <a class="btn quiet" href="#reel">Watch the 27-second reel</a>
       </div>
       <p class="facts">Quezon City, Philippines · Working in operations, media and events since 2023</p>
     </div>
     <div class="hero-art" aria-hidden="true"><div id="heroPhone"></div></div>
   </div>
 </div>
+
+<section id="reel" class="reel-sec">
+  <div class="wrap">
+    <div class="sec-head" data-rv>
+      <h2>See it in 27 seconds</h2>
+      <p>A quick look at the apps, automations and video edits on this page.</p>
+    </div>
+    <div class="showreel" data-rv>
+      <div class="rs-frame" id="showreel"></div>
+      <ul class="rs-list" aria-label="What is in the reel">
+        <li><b>Tindahan POS</b><span>The store app with GCash, cash and utang.</span></li>
+        <li><b>Gmail organizer</b><span>The n8n workflow that sorts the inbox into labels.</span></li>
+        <li><b>Messenger chatbot</b><span>Answers customers from a Google Doc.</span></li>
+        <li><b>Video edits</b><span>Talking heads and social clips.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
 
 <section id="offer" class="tint">
   <div class="wrap">
@@ -935,7 +966,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
     }).join('');
   }
   /* works whether the media files sit next to index.html or in a media/ folder */
-  var probe=new Image();probe.onload=function(){drawR('')};probe.onerror=function(){drawR('media/')};probe.src='th-2.jpg';
+  var probe=new Image();probe.onload=function(){drawR('');drawReel('')};probe.onerror=function(){drawR('media/');drawReel('media/')};probe.src='th-2.jpg';
   rg.addEventListener('play',function(e){rg.querySelectorAll('video').forEach(function(v){if(v!==e.target)v.pause()})},true);
 
   var cats=['All'];V.forEach(function(v){if(cats.indexOf(v[0])<0)cats.push(v[0])});
@@ -961,6 +992,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
     }).join('');
   }
   drawFilter();drawGrid();
+
+  /* showreel (poster + video load from the media files) */
+  function drawReel(b){
+    document.getElementById('showreel').innerHTML='<video controls playsinline preload="metadata" poster="'+b+'showreel.jpg" src="'+b+'showreel.mp4" aria-label="Showreel of James Toledo\'s apps, automations and video edits, 27 seconds"></video>';
+  }
+  var MEDIA_BASE='media/';
+  
 
   /* hero phone */
   document.getElementById('heroPhone').innerHTML=phonePOS();
@@ -996,7 +1034,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
     });
   }
   /* which section is on screen, for the top bar and the tab bar */
-  var secIds=['offer','work','automation','creative','experience','contact'];
+  var secIds=['reel','offer','work','automation','creative','experience','contact'];
   var secEls=secIds.map(function(id){return document.getElementById(id)});
   var spyLinks=document.querySelectorAll('[data-sec]');
   var ticking=false;
