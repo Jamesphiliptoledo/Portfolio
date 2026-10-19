@@ -305,6 +305,13 @@ dd li::before{content:"";position:absolute;left:0;top:.7em;width:10px;height:2px
 .verdict{min-height:28px}
 .verdict b{font-weight:700}
 
+.scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scrollx img{min-width:880px}
+.scrollx:focus-visible{outline:3px solid var(--focus,#0a84ff);outline-offset:-3px}
+.vr-top{margin-bottom:clamp(24px,4vw,40px)}
+.vr-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:start}
+@media(max-width:900px){.vr-grid{grid-template-columns:minmax(0,1fr)}}
+.vr-grid .shot img{min-width:0}
 .sep{border:0;border-top:1px solid var(--line);margin:clamp(48px,7vw,88px) 0}
 .fb{display:grid;grid-template-columns:minmax(0,1fr) minmax(min(100%,280px),340px);gap:clamp(24px,5vw,64px);align-items:start}
 @media(max-width:900px){.fb{grid-template-columns:minmax(0,1fr)}}
@@ -530,7 +537,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
   <div class="wrap">
     <div class="sec-head" data-rv>
       <h2>Automation with n8n</h2>
-      <p>Workflows that take over the busywork. One sorts a crowded Gmail inbox into labels. Another answers customer messages on Facebook.</p>
+      <p>Workflows that take over the busywork. One sorts a crowded Gmail inbox into labels. Another answers customer messages on Facebook. A third sends a ranked list of viral videos to your inbox every morning.</p>
     </div>
     <div class="gm" data-rv>
       <figure class="shot">
@@ -592,6 +599,52 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
       <li>Never asks for passwords or card details</li>
       <li>No promises on refunds or delivery dates</li>
     </ul>
+
+    <hr class="sep">
+
+    <div class="vr" id="viral">
+      <div class="vr-top gm-info" data-rv>
+        <div class="tags"><span class="tag st">n8n workflow · live</span><span class="tag">Apify TikTok scraper</span><span class="tag">Groq AI</span><span class="tag">Google Sheets</span><span class="tag">Gmail</span></div>
+        <h3>Daily viral ideas by email</h3>
+        <p class="soft">Runs every day at 7 AM. It finds trending TikTok videos in your niche, ranks them, and emails you a short list with an idea for each one.</p>
+      </div>
+      <figure class="shot vr-top" data-rv>
+        <div class="shot-bar"><i></i><i></i><i></i><span>n8n · Daily viral content ideas</span></div>
+        <div class="scrollx" tabindex="0" role="region" aria-label="Workflow screenshot, scrolls sideways on small screens">
+          <img src="viral-workflow.png" onerror="this.onerror=null;this.src='media/viral-workflow.png'" width="1528" height="235" alt="The daily viral ideas workflow in n8n. A 7 AM schedule reads the sent history and users sheets, keeps active users, loops over them, builds a search query, scrapes TikTok with Apify, scores and picks the top videos, builds an AI prompt, asks Groq for content ideas, builds the email, sends it with Gmail, then saves the log rows to the sent history sheet.">
+        </div>
+        <figcaption>My workflow in n8n. One loop runs for each active user in the sheet.</figcaption>
+      </figure>
+      <div class="vr-grid">
+        <div class="gm-info" data-rv>
+          <dl>
+            <div><dt>The problem</dt><dd class="soft">Social media managers lose an hour a day scrolling for ideas. They need to know what is already working in their niche, today.</dd></div>
+            <div><dt>What I built</dt><dd class="soft">Each morning the workflow reads a Users sheet and keeps only the active users. For each one it builds a search for their niche and scrapes TikTok through Apify, about 30 videos per run. It scores them by views per hour and engagement and keeps the best. Groq then writes content ideas for them, and Gmail sends the result. Everything sent is saved to a Sent History sheet.</dd></div>
+            <div><dt>What it does for you</dt><dd>You get an email you can act on before you start work. Each video shows its views, likes, shares and engagement rate, with a button to watch it. In my first run it delivered 7 ranked videos for the niche "Social Media tips".</dd></div>
+          </dl>
+        </div>
+        <figure class="shot" data-rv>
+          <div class="shot-bar"><i></i><i></i><i></i><span>The email it sends</span></div>
+          <img src="viral-email.png" onerror="this.onerror=null;this.src='media/viral-email.png'" width="1527" height="656" loading="lazy" alt="The daily email in Gmail. The subject reads 7 viral ideas for your Social Media tips page. The first two videos show view counts of 229.4K and 237.3K with likes, shares and engagement, each with a Watch on TikTok button.">
+          <figcaption>A real email from my first run. Each card has a Watch on TikTok button.</figcaption>
+        </figure>
+      </div>
+      <ol class="nodes" data-rv>
+        <li class="node"><span class="nk">Step 1 · Schedule + Sheets</span><b>Read who to send to</b><p>Every day at 7 AM. Reads the Users and Sent History sheets and keeps the active users.</p></li>
+        <li class="node"><span class="nk">Step 2 · Apify</span><b>Collect</b><p>Searches TikTok for the user's niche and pulls about 30 videos.</p></li>
+        <li class="node"><span class="nk">Step 3 · Code</span><b>Rank</b><p>Scores each video and picks the top ones.</p></li>
+        <li class="node"><span class="nk">Step 4 · Groq AI</span><b>Explain</b><p>Writes a content idea for each pick.</p></li>
+        <li class="node"><span class="nk">Step 5 · Gmail + Sheets</span><b>Deliver and log</b><p>Emails the list, then saves what was sent.</p></li>
+      </ol>
+      <ul class="rules" data-rv>
+        <li>Works for any niche</li>
+        <li>Also fits online selling</li>
+        <li>Food and restaurants</li>
+        <li>Real estate</li>
+        <li>Hiring</li>
+        <li>Sales leads</li>
+      </ul>
+    </div>
   </div>
 </section>
 
